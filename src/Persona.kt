@@ -1,12 +1,30 @@
-open class Persona (val nombre: String, var edad: Int) {
+import java.time.LocalDate
 
 
-    /*
-    Modifica la clase Persona para que no acepte nombres vacíos y edades negativas. Utiliza un constructor primario con valores por defecto para edad.
-    Prueba a crear un estudiante con una edad negativa, controlando las excepciones y mostrando el mensaje de error específico.
+open class Persona (var nombre: String, edad: Int, private val fechaNacimiento: String) {
 
-    TODO
-     */
+    val fechaNacimientoSplit = fechaNacimiento.split("/")
+
+    val fechaHoy = LocalDate.now()
+    var edad = (fechaHoy.year - fechaNacimientoSplit[2].toInt())
+        //private set
+
+    init{
+        try{
+            require(nombre.isNotEmpty()){"El nombre no puede estar vacío"}
+        }catch(e: IllegalArgumentException){
+            println("Error: ${e.message}")
+        }
+
+        try{
+            require(edad > 0){"La edad debe ser un número positivo"}
+        }catch(e: IllegalArgumentException){
+            println("Error: ${e.message}")
+        }
+
+    }
+
+
 
 
     fun cumple(){
@@ -17,17 +35,10 @@ open class Persona (val nombre: String, var edad: Int) {
         return "Persona(nombre = $nombre, edad = $edad)"
     }
 
-    /*
-
-    Modifica la clase Persona para que reciba la fecha de nacimiento por el constructor, y se almacene en una propiedad privada. Modificar la edad para que no se pueda modificar, pero se pueda consultar su valor, calculándolo con respecto a la fecha de nacimiento.
-
-     TODO
-
-     */
 
 
-    open fun actividad(){
-        println("$nombre está realizando una actividad")
+    open fun actividad(): String {
+        return "$nombre está realizando una actividad"
     }
 
 }
